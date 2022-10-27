@@ -2,7 +2,9 @@ package com.alessandro.sistemaloja.service;
 
 import com.alessandro.sistemaloja.domain.Categoria;
 import com.alessandro.sistemaloja.repository.CategoriaRepository;
+import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,5 +32,15 @@ public class CategoriaService {
 
         buscarPorId(obj.getId());
         return repo.save(obj);
+    }
+
+    public void deletar(Integer id) {
+        buscarPorId(id);
+        try {
+            repo.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
+        }
+
     }
 }
