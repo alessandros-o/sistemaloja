@@ -32,6 +32,7 @@ public class CategoriaService {
     }
 
     public Categoria inserir(Categoria obj) {
+
         return repo.save(obj);
     }
 
@@ -62,5 +63,9 @@ public class CategoriaService {
         var objetoPaginado = repo.findAll(pageRequest);
         Page<CategoriaResponse> responsePage = objetoPaginado.map(x -> new CategoriaResponse(x));
         return responsePage;
+    }
+
+    public Categoria fromDTO(CategoriaResponse response) {
+        return new Categoria(response.getId(), response.getNome());
     }
 }
