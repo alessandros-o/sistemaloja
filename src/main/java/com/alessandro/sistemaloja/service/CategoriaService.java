@@ -1,6 +1,7 @@
 package com.alessandro.sistemaloja.service;
 
 import com.alessandro.sistemaloja.domain.Categoria;
+import com.alessandro.sistemaloja.domain.Cliente;
 import com.alessandro.sistemaloja.dto.CategoriaResponse;
 import com.alessandro.sistemaloja.repository.CategoriaRepository;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
@@ -36,9 +37,9 @@ public class CategoriaService {
     }
 
     public Categoria alterar(Categoria obj) {
-
-        buscarPorId(obj.getId());
-        return repo.save(obj);
+        var newObj = buscarPorId(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
     }
 
     public void deletar(Integer id) {
@@ -66,5 +67,9 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaResponse response) {
         return new Categoria(response.getId(), response.getNome());
+    }
+
+    private void updateData(Categoria newObj, Categoria obj) {
+        newObj.setNome(obj.getNome());
     }
 }
