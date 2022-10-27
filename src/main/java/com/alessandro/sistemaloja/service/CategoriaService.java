@@ -6,6 +6,9 @@ import com.alessandro.sistemaloja.repository.CategoriaRepository;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -52,5 +55,12 @@ public class CategoriaService {
         var list = repo.findAll();
         List<CategoriaResponse> responseList = list.stream().map(x -> new CategoriaResponse(x)).collect(Collectors.toList());
         return  responseList;
+    }
+
+    public Page<CategoriaResponse> buscarPaginado(Integer page, Integer qtdPorPagina, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, qtdPorPagina, Sort.Direction.valueOf(direction), orderBy);
+        var objetoPaginado = repo.findAll(pageRequest);
+        Page<CategoriaResponse> responsePage = objetoPaginado.map(x -> new CategoriaResponse(x));
+        return responsePage;
     }
 }
