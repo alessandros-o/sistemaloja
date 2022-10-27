@@ -1,9 +1,11 @@
 package com.alessandro.sistemaloja.resources.exception;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class StandardError implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Integer status;
