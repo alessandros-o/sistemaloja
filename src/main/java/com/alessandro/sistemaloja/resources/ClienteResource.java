@@ -1,12 +1,15 @@
 package com.alessandro.sistemaloja.resources;
 
 import com.alessandro.sistemaloja.domain.Cliente;
+import com.alessandro.sistemaloja.domain.Cliente;
+import com.alessandro.sistemaloja.dto.ClienteResponse;
 import com.alessandro.sistemaloja.service.ClienteService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/clientes")
@@ -22,5 +25,35 @@ public class ClienteResource {
     public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id) {
         Cliente obj = clienteService.buscarPorId(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClienteResponse>> listarTodas() {
+        List<ClienteResponse> list = clienteService.listarTodas();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/page")
+    public ResponseEntity<Page<ClienteResponse>> listarTodasPaginado(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "qtdPorPagina", defaultValue = "24") Integer qtdPorPagina,
+            @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+        Page<ClienteResponse> list = clienteService.buscarPaginado(page, qtdPorPagina, orderBy, direction);
+        return ResponseEntity.ok().body(list);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> alterar(@PathVariable Integer id, @Valid @RequestBody ClienteResponse objResponse) {
+        Cliente obj = clienteService.fromDTO(objResponse);
+        obj.setId(id);
+        obj = clienteService.alterar(obj);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+        clienteService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
