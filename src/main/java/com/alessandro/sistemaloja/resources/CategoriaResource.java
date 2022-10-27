@@ -1,12 +1,14 @@
 package com.alessandro.sistemaloja.resources;
 
 import com.alessandro.sistemaloja.domain.Categoria;
+import com.alessandro.sistemaloja.dto.CategoriaResponse;
 import com.alessandro.sistemaloja.service.CategoriaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -23,6 +25,12 @@ public class CategoriaResource {
 
         Categoria obj = service.buscarPorId(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoriaResponse>> listarTodas() {
+        List<CategoriaResponse> list = service.listarTodas();
+        return ResponseEntity.ok().body(list);
     }
 
     @PostMapping

@@ -1,13 +1,17 @@
 package com.alessandro.sistemaloja.service;
 
 import com.alessandro.sistemaloja.domain.Categoria;
+import com.alessandro.sistemaloja.dto.CategoriaResponse;
 import com.alessandro.sistemaloja.repository.CategoriaRepository;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
@@ -42,5 +46,11 @@ public class CategoriaService {
             throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
         }
 
+    }
+
+    public List<CategoriaResponse> listarTodas() {
+        var list = repo.findAll();
+        List<CategoriaResponse> responseList = list.stream().map(x -> new CategoriaResponse(x)).collect(Collectors.toList());
+        return  responseList;
     }
 }
