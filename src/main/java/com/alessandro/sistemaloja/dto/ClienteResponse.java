@@ -1,6 +1,7 @@
 package com.alessandro.sistemaloja.dto;
 
 import com.alessandro.sistemaloja.domain.Cliente;
+import com.alessandro.sistemaloja.service.validation.ClienteUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
 
+@ClienteUpdate
 public class ClienteResponse implements Serializable {
 
     @Serial
