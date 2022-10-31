@@ -31,12 +31,16 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
     @Override
     public boolean isValid(ClienteResponse clienteResponse, ConstraintValidatorContext context) {
 
+        // Para pegar o id através da URI
+        //(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) pega o map de variáveis de URI que estão na requisição
         Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Integer uriId = Integer.parseInt(map.get("id"));
 
         List<FieldMessage> list = new ArrayList<>();
 
         Cliente aux = repository.findByEmail(clienteResponse.getEmail());
+        // verifica se o email passado pertence ao id do cliente a ser atualizado ou a outro cliente já existente no BD
+        // se pertencer a outro cliente, ou seja, se o id for diferente, lança exceção
         if (aux != null && !aux.getId().equals(uriId)) {
             list.add(new FieldMessage("email", "Email já existente"));
         }
