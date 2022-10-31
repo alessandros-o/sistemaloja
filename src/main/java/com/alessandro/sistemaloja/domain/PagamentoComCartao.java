@@ -1,10 +1,12 @@
 package com.alessandro.sistemaloja.domain;
 
 import com.alessandro.sistemaloja.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")// para identificar o tipo que será passado no momento de instanciar com json
 public class PagamentoComCartao extends Pagamento {
 
     private static final long serialVersionUID = 1L;
