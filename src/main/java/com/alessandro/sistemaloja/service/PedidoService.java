@@ -10,6 +10,7 @@ import com.alessandro.sistemaloja.repository.PedidoRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -25,6 +26,9 @@ public class PedidoService {
     @Autowired
     private BoletoService boletoService;
 
+    @Autowired
+    private ClienteService clienteService;
+
     public PedidoService(PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository, ProdutoService produtoService, ItemPedidoRepository itemPedidoRepository) {
         this.repo = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
@@ -37,9 +41,11 @@ public class PedidoService {
         return obj.orElseThrow(() -> new ObjectNotFoundException(Pedido.class, "Pedido de id " + id + " não encontrado"));
     }
 
+    @Transactional
     public Pedido inserir(Pedido obj) {
         obj.setId(null);
         obj.setInstante(new Date());
+        obj.setCliente(clienteService.buscarPorId(obj.getCliente().getId()));
         obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -50,10 +56,12 @@ public class PedidoService {
         pagamentoRepository.save(obj.getPagamento());
         for (ItemPedido ip : obj.getItens()) {
             ip.setDesconto(0.0);
-            ip.setPreco(produtoService.buscarPorId(ip.getProduto().getId()).getPreco());
+            ip.setProduto(produtoService.buscarPorId(ip.getProduto().getId()));
+            ip.setPreco(ip.getProduto().getPreco());
             ip.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 }
