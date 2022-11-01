@@ -9,10 +9,12 @@ import com.alessandro.sistemaloja.repository.ClienteRepository;
 import com.alessandro.sistemaloja.repository.EnderecoRepository;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
+
+    @Autowired
+    private BCryptPasswordEncoder pe;
 
     private final ClienteRepository repo;
     private final EnderecoRepository enderecoRepository;
@@ -75,11 +80,11 @@ public class ClienteService {
 
     public Cliente fromDTO(ClienteResponse response) {
 
-        return new Cliente(response.getId(), response.getNome(), response.getEmail(), null, null);
+        return new Cliente(response.getId(), response.getNome(), response.getEmail(), null, null, null);
     }
 
     public Cliente fromDTO(ClienteCreateRequest createRequest) {
-        Cliente cliente = new Cliente(null, createRequest.getNome(), createRequest.getEmail(), createRequest.getCpfOuCnpj(), TipoCliente.toEnum(createRequest.getTipo()));
+        Cliente cliente = new Cliente(null, createRequest.getNome(), createRequest.getEmail(), createRequest.getCpfOuCnpj(), TipoCliente.toEnum(createRequest.getTipo()), pe.encode(createRequest.getSenha()));
         Cidade cidade = new Cidade(createRequest.getCidadeId(), null, null);
         Endereco endereco = new Endereco(null, createRequest.getLogradouro(), createRequest.getNumero(), createRequest.getComplemento(), createRequest.getBairro(), createRequest.getCep(), cliente, cidade);
         cliente.getEnderecos().add(endereco);
