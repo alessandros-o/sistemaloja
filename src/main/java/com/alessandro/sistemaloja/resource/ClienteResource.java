@@ -6,6 +6,7 @@ import com.alessandro.sistemaloja.dto.ClienteResponse;
 import com.alessandro.sistemaloja.service.ClienteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,12 +30,14 @@ public class ClienteResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteResponse>> listarTodas() {
         List<ClienteResponse> list = clienteService.listarTodas();
         return ResponseEntity.ok().body(list);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/page")
     public ResponseEntity<Page<ClienteResponse>> listarTodasPaginado(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -44,6 +47,7 @@ public class ClienteResource {
         Page<ClienteResponse> list = clienteService.buscarPaginado(page, qtdPorPagina, orderBy, direction);
         return ResponseEntity.ok().body(list);
     }
+
 
     @PostMapping
     public ResponseEntity<Void> inserir(@Valid @RequestBody ClienteCreateRequest createRequest) {
@@ -61,6 +65,7 @@ public class ClienteResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         clienteService.deletar(id);

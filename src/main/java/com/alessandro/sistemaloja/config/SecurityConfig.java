@@ -35,7 +35,10 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/produtos/**",
-            "/categorias/**",
+            "/categorias/**"
+    };
+
+    private static final String[] PUBLIC_MATCHERS_POST = {
             "/clientes/**"
     };
 
@@ -44,7 +47,9 @@ public class SecurityConfig {
         http.headers().frameOptions().disable();// para liberar o acesso a url do h2
         http.cors().and().csrf().disable();
 
-        http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+                .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
 

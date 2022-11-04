@@ -5,6 +5,7 @@ import com.alessandro.sistemaloja.dto.CategoriaResponse;
 import com.alessandro.sistemaloja.service.CategoriaService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,6 +46,7 @@ public class CategoriaResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> inserir(@Valid @RequestBody CategoriaResponse objResponse) {
         Categoria obj = service.fromDTO(objResponse);
@@ -53,6 +55,7 @@ public class CategoriaResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Void> alterar(@PathVariable Integer id, @Valid @RequestBody CategoriaResponse objResponse) {
         Categoria obj = service.fromDTO(objResponse);
@@ -61,6 +64,7 @@ public class CategoriaResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         service.deletar(id);

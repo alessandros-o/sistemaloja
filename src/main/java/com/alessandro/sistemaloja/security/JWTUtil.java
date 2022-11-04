@@ -1,6 +1,7 @@
 package com.alessandro.sistemaloja.security;
 
 import com.alessandro.sistemaloja.domain.Cliente;
+import com.alessandro.sistemaloja.domain.enums.Perfil;
 import com.alessandro.sistemaloja.dto.AuthenticatedUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JWTUtil {
@@ -26,6 +28,7 @@ public class JWTUtil {
         return Jwts.builder()
                 .setSubject(cliente.getId().toString())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .claim("perfis", cliente.getPerfis().stream().map(Perfil::getDescricao).collect(Collectors.toList()))
                 .signWith(getSecretKey())
                 .compact();
     }
