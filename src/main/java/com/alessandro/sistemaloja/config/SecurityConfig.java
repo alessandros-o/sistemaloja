@@ -1,5 +1,6 @@
 package com.alessandro.sistemaloja.config;
 
+import com.alessandro.sistemaloja.security.JWTAutenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,7 +8,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,8 +22,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
         jsr250Enabled = true)
 public class SecurityConfig {
 
+    private final JWTAutenticationFilter jwtAutenticationFilter;
+
+    public SecurityConfig(JWTAutenticationFilter jwtAutenticationFilter) {
+        this.jwtAutenticationFilter = jwtAutenticationFilter;
+    }
+
     private static final String[] PUBLIC_MATCHERS = {
-            "/h2-console/**"
+            "/h2-console/**",
+            "/login",
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
@@ -38,9 +48,12 @@ public class SecurityConfig {
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
 
+
         http = http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
+
+        http.addFilterBefore(jwtAutenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -53,9 +66,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }

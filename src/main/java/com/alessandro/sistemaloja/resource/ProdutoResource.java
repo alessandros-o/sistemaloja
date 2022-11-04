@@ -1,16 +1,13 @@
-package com.alessandro.sistemaloja.resources;
+package com.alessandro.sistemaloja.resource;
 
 import com.alessandro.sistemaloja.domain.Produto;
 import com.alessandro.sistemaloja.dto.ProdutoResponse;
-import com.alessandro.sistemaloja.resources.utils.URL;
+import com.alessandro.sistemaloja.resource.utils.URL;
 import com.alessandro.sistemaloja.service.ProdutoService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController

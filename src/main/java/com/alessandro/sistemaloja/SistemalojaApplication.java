@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class SistemalojaApplication implements CommandLineRunner {
 	private ItemPedidoRepository itemPedidoRepository;
 
 	@Autowired
-	private BCryptPasswordEncoder pe;
+	private PasswordEncoder pe;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SistemalojaApplication.class, args);

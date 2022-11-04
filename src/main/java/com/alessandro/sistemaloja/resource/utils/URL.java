@@ -1,4 +1,4 @@
-package com.alessandro.sistemaloja.resources.utils;
+package com.alessandro.sistemaloja.resource.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

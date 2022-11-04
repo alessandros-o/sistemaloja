@@ -1,9 +1,6 @@
-package com.alessandro.sistemaloja.resources;
+package com.alessandro.sistemaloja.resource;
 
-import com.alessandro.sistemaloja.domain.Categoria;
 import com.alessandro.sistemaloja.domain.Pedido;
-import com.alessandro.sistemaloja.dto.CategoriaResponse;
-import com.alessandro.sistemaloja.service.CategoriaService;
 import com.alessandro.sistemaloja.service.PedidoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

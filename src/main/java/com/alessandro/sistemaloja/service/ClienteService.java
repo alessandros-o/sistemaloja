@@ -1,7 +1,8 @@
 package com.alessandro.sistemaloja.service;
 
-import com.alessandro.sistemaloja.domain.*;
+import com.alessandro.sistemaloja.domain.Cidade;
 import com.alessandro.sistemaloja.domain.Cliente;
+import com.alessandro.sistemaloja.domain.Endereco;
 import com.alessandro.sistemaloja.domain.enums.TipoCliente;
 import com.alessandro.sistemaloja.dto.ClienteCreateRequest;
 import com.alessandro.sistemaloja.dto.ClienteResponse;
@@ -9,12 +10,11 @@ import com.alessandro.sistemaloja.repository.ClienteRepository;
 import com.alessandro.sistemaloja.repository.EnderecoRepository;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,15 +25,14 @@ import java.util.stream.Collectors;
 @Service
 public class ClienteService {
 
-    @Autowired
-    private BCryptPasswordEncoder pe;
-
+    private final PasswordEncoder pe;
     private final ClienteRepository repo;
     private final EnderecoRepository enderecoRepository;
 
-    public ClienteService(ClienteRepository repo, EnderecoRepository enderecoRepository) {
+    public ClienteService(ClienteRepository repo, EnderecoRepository enderecoRepository, PasswordEncoder pe) {
         this.repo = repo;
         this.enderecoRepository = enderecoRepository;
+        this.pe = pe;
     }
 
     public Cliente buscarPorId(Integer id) {

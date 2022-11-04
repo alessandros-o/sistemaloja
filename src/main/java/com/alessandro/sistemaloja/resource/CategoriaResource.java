@@ -1,4 +1,4 @@
-package com.alessandro.sistemaloja.resources;
+package com.alessandro.sistemaloja.resource;
 
 import com.alessandro.sistemaloja.domain.Categoria;
 import com.alessandro.sistemaloja.dto.CategoriaResponse;

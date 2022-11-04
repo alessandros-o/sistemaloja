@@ -1,4 +1,4 @@
-package com.alessandro.sistemaloja.resources.exception;
+package com.alessandro.sistemaloja.resource.exception;
 
 import java.io.Serial;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.alessandro.sistemaloja.resources.exception;
+package com.alessandro.sistemaloja.resource.exception;
 
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;

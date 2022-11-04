@@ -1,12 +1,9 @@
 package com.alessandro.sistemaloja.service.validation;
 
 import com.alessandro.sistemaloja.domain.Cliente;
-import com.alessandro.sistemaloja.domain.enums.TipoCliente;
-import com.alessandro.sistemaloja.dto.ClienteCreateRequest;
 import com.alessandro.sistemaloja.dto.ClienteResponse;
 import com.alessandro.sistemaloja.repository.ClienteRepository;
-import com.alessandro.sistemaloja.resources.exception.FieldMessage;
-import com.alessandro.sistemaloja.service.validation.utils.BR;
+import com.alessandro.sistemaloja.resource.exception.FieldMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
