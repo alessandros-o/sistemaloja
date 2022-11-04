@@ -3,11 +3,14 @@ package com.alessandro.sistemaloja.service;
 import com.alessandro.sistemaloja.domain.Cidade;
 import com.alessandro.sistemaloja.domain.Cliente;
 import com.alessandro.sistemaloja.domain.Endereco;
+import com.alessandro.sistemaloja.domain.enums.Perfil;
 import com.alessandro.sistemaloja.domain.enums.TipoCliente;
+import com.alessandro.sistemaloja.dto.AuthenticatedUserDetails;
 import com.alessandro.sistemaloja.dto.ClienteCreateRequest;
 import com.alessandro.sistemaloja.dto.ClienteResponse;
 import com.alessandro.sistemaloja.repository.ClienteRepository;
 import com.alessandro.sistemaloja.repository.EnderecoRepository;
+import com.alessandro.sistemaloja.service.exception.AuthorizationException;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,6 +40,11 @@ public class ClienteService {
     }
 
     public Cliente buscarPorId(Integer id) {
+
+        AuthenticatedUserDetails user = UserDetailsService.authenticated();
+        if (user == null || !user.perfis().contains(Perfil.ADMIN.getDescricao()) && !Objects.equals(id, user.id())) {
+            throw  new AuthorizationException("Acesso negado");
+        }
 
         Optional<Cliente> clienteOptional = repo.findById(id);
         return clienteOptional.orElseThrow(() -> new ObjectNotFoundException(Cliente.class, "Cliente com id: " + id +  " não encontrado!"));

@@ -38,7 +38,7 @@ public class JWTUtil {
                 .parseClaimsJws(jwtToken).getBody();
 
         return new AuthenticatedUserDetails(
-                Long.valueOf(claims.getSubject()),
+                Integer.valueOf(claims.getSubject()),
                 claims.get("email", String.class),
                 claims.get("perfis", List.class)
         );
