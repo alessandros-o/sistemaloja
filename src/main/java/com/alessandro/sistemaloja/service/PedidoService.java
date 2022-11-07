@@ -1,14 +1,21 @@
 package com.alessandro.sistemaloja.service;
 
+import com.alessandro.sistemaloja.domain.Cliente;
 import com.alessandro.sistemaloja.domain.ItemPedido;
 import com.alessandro.sistemaloja.domain.PagamentoComBoleto;
 import com.alessandro.sistemaloja.domain.Pedido;
 import com.alessandro.sistemaloja.domain.enums.EstadoPagamento;
+import com.alessandro.sistemaloja.dto.AuthenticatedUserDetails;
+import com.alessandro.sistemaloja.dto.CategoriaResponse;
 import com.alessandro.sistemaloja.repository.ItemPedidoRepository;
 import com.alessandro.sistemaloja.repository.PagamentoRepository;
 import com.alessandro.sistemaloja.repository.PedidoRepository;
+import com.alessandro.sistemaloja.service.exception.AuthorizationException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,5 +73,16 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> buscarPaginado(Integer page, Integer qtdPorPagina, String orderBy, String direction) {
+
+        AuthenticatedUserDetails user = UserDetailsService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado!");
+        }
+        PageRequest pageRequest = PageRequest.of(page, qtdPorPagina, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.buscarPorId(user.id());
+        return repo.findByCliente(cliente, pageRequest);
     }
 }
