@@ -2,6 +2,9 @@ package com.alessandro.sistemaloja.resource.exception;
 
 import com.alessandro.sistemaloja.service.exception.AuthorizationException;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
+import com.alessandro.sistemaloja.service.exception.FileException;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,4 +45,25 @@ public class ResourceExceptionHandler {
         StandardError error = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
+
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<StandardError> file(FileException e, HttpServletRequest request) {
+        StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AmazonServiceException.class)
+    public ResponseEntity<StandardError> amazonService(AmazonServiceException e, HttpServletRequest request) {
+        HttpStatus code = HttpStatus.valueOf(e.getErrorCode());
+        StandardError error = new StandardError(code.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(code).body(error);
+    }
+
+    @ExceptionHandler(AmazonClientException.class)
+    public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
+        StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
 }
