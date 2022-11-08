@@ -13,6 +13,7 @@ import com.alessandro.sistemaloja.repository.EnderecoRepository;
 import com.alessandro.sistemaloja.service.exception.AuthorizationException;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +21,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +35,9 @@ public class ClienteService {
     private final PasswordEncoder pe;
     private final ClienteRepository repo;
     private final EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private S3Service s3Service;
 
     public ClienteService(ClienteRepository repo, EnderecoRepository enderecoRepository, PasswordEncoder pe) {
         this.repo = repo;
@@ -109,5 +115,9 @@ public class ClienteService {
     private void updateData(Cliente newObj, Cliente obj) {
         newObj.setNome(obj.getNome());
         newObj.setEmail(obj.getEmail());
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 }
