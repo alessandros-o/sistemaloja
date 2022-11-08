@@ -14,6 +14,7 @@ import com.alessandro.sistemaloja.service.exception.AuthorizationException;
 import com.alessandro.sistemaloja.service.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -32,12 +34,18 @@ import java.util.stream.Collectors;
 @Service
 public class ClienteService {
 
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
+
     private final PasswordEncoder pe;
     private final ClienteRepository repo;
     private final EnderecoRepository enderecoRepository;
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private ImageService imageService;
 
     public ClienteService(ClienteRepository repo, EnderecoRepository enderecoRepository, PasswordEncoder pe) {
         this.repo = repo;
@@ -123,11 +131,12 @@ public class ClienteService {
             throw  new AuthorizationException("Acesso negado");
         }
 
-        URI uri = s3Service.uploadFile(multipartFile);
-        Optional<Cliente> optional = repo.findById(user.id());
-        Cliente cliente = optional.orElseThrow();
-        cliente.setImageUrl(uri.toString());
-        repo.save(cliente);
-        return uri;
+        //extrair um JPG a partir da imagem que foi enviada na requisição(parâmetro) do método
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+
+        //montando o nome do arquivo personalizado de acordo com o cliente pegando prefixo definido no application.properties
+        String fileName = prefix + user.id() + ".jpg";
+
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
     }
 }
