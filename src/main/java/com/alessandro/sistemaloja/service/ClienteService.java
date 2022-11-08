@@ -37,6 +37,10 @@ public class ClienteService {
     @Value("${img.prefix.client.profile}")
     private String prefix;
 
+
+    @Value("${img.profile.size}")
+    private Integer size;
+
     private final PasswordEncoder pe;
     private final ClienteRepository repo;
     private final EnderecoRepository enderecoRepository;
@@ -133,6 +137,12 @@ public class ClienteService {
 
         //extrair um JPG a partir da imagem que foi enviada na requisição(parâmetro) do método
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+
+        //recortando imagem para ficar quadrada
+        jpgImage = imageService.croparImagem(jpgImage);
+
+        //redimensionando a imagem
+        jpgImage = imageService.redimensionarImagem(jpgImage, size);
 
         //montando o nome do arquivo personalizado de acordo com o cliente pegando prefixo definido no application.properties
         String fileName = prefix + user.id() + ".jpg";
