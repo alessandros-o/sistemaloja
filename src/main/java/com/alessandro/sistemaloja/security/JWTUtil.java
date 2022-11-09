@@ -27,6 +27,7 @@ public class JWTUtil {
     public String generateToken(Cliente cliente) {
         return Jwts.builder()
                 .setSubject(cliente.getId().toString())
+                .claim("email", cliente.getEmail())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .claim("perfis", cliente.getPerfis().stream().map(Perfil::getDescricao).collect(Collectors.toList()))
                 .signWith(getSecretKey())

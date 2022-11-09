@@ -31,6 +31,12 @@ public class ClienteResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Cliente> buscarPorEmail(@PathVariable String email) {
+        Cliente obj = clienteService.buscarPorEmail(email);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteResponse>> listarTodas() {
