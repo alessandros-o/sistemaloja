@@ -36,6 +36,7 @@ public class AuthResource {
         Cliente cliente = clienteService.buscarPorId(user.id());
         String token = jwtUtil.generateToken(cliente);
         response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("access-control-expose-headers", "Authorization");
         return ResponseEntity.noContent().build();
     }
 
