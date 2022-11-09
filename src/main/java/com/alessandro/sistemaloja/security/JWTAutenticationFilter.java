@@ -41,6 +41,7 @@ public class JWTAutenticationFilter extends OncePerRequestFilter {
                 null,
                 authenticatedUserDetails.perfis().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
+        response.addHeader("access-control-expose-headers", "Authorization");
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         filterChain.doFilter(request, response);
