@@ -1,10 +1,13 @@
 package com.alessandro.sistemaloja.dto;
 
+import lombok.Builder;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
 
+@Builder
 public class EmailDto implements Serializable {
 
     @Serial

@@ -1,7 +1,9 @@
 package com.alessandro.sistemaloja.dto;
 
 import com.alessandro.sistemaloja.domain.Cidade;
+import lombok.Builder;
 
+@Builder
 public class CidadeDTO {
 
     private Integer id;
