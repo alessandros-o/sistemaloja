@@ -1,11 +1,13 @@
 package com.alessandro.sistemaloja.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Builder
 @Entity
 public class Endereco implements Serializable {
 

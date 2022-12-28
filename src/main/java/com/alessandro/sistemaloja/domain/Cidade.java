@@ -1,10 +1,15 @@
 package com.alessandro.sistemaloja.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Builder
 @Entity
+@AllArgsConstructor
 public class Cidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,12 +24,6 @@ public class Cidade implements Serializable {
     private Estado estado;
 
     public Cidade() {
-    }
-
-    public Cidade(Integer id, String nome, Estado estado) {
-        this.id = id;
-        this.nome = nome;
-        this.estado = estado;
     }
 
     public Integer getId() {

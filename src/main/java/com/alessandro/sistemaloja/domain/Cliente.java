@@ -3,6 +3,8 @@ package com.alessandro.sistemaloja.domain;
 import com.alessandro.sistemaloja.domain.enums.Perfil;
 import com.alessandro.sistemaloja.domain.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -10,7 +12,9 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Builder
 @Entity
+@AllArgsConstructor
 public class Cliente implements Serializable {
 
     @Serial

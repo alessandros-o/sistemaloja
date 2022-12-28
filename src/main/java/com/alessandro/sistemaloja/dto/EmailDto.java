@@ -1,5 +1,6 @@
 package com.alessandro.sistemaloja.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.validation.constraints.Email;
@@ -8,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Builder
+@AllArgsConstructor
 public class EmailDto implements Serializable {
 
     @Serial

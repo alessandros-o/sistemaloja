@@ -1,6 +1,8 @@
 package com.alessandro.sistemaloja.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -9,7 +11,9 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
 
+@Builder
 @Entity
+@AllArgsConstructor
 public class ItemPedido implements Serializable {
 
     private static final long serialVersionUID = 1L;

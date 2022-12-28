@@ -6,13 +6,11 @@ import com.alessandro.sistemaloja.domain.PagamentoComBoleto;
 import com.alessandro.sistemaloja.domain.Pedido;
 import com.alessandro.sistemaloja.domain.enums.EstadoPagamento;
 import com.alessandro.sistemaloja.dto.AuthenticatedUserDetails;
-import com.alessandro.sistemaloja.dto.CategoriaResponse;
 import com.alessandro.sistemaloja.repository.ItemPedidoRepository;
 import com.alessandro.sistemaloja.repository.PagamentoRepository;
 import com.alessandro.sistemaloja.repository.PedidoRepository;
 import com.alessandro.sistemaloja.service.exception.AuthorizationException;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,20 +28,22 @@ public class PedidoService {
     private final ProdutoService produtoService;
     private final ItemPedidoRepository itemPedidoRepository;
 
-    @Autowired
     private BoletoService boletoService;
 
-    @Autowired
     private ClienteService clienteService;
 
-    @Autowired
     private EmailService emailService;
 
-    public PedidoService(PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository, ProdutoService produtoService, ItemPedidoRepository itemPedidoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository,
+                         ProdutoService produtoService, ItemPedidoRepository itemPedidoRepository,
+                         ClienteService clienteService, BoletoService boletoService, EmailService emailService) {
         this.repo = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
         this.produtoService = produtoService;
         this.itemPedidoRepository = itemPedidoRepository;
+        this.clienteService = clienteService;
+        this.boletoService = boletoService;
+        this.emailService = emailService;
     }
 
     public Pedido buscarPorId(Integer id) {

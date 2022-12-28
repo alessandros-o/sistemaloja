@@ -1,12 +1,14 @@
 package com.alessandro.sistemaloja.dto;
 
 import com.alessandro.sistemaloja.domain.Estado;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Builder
+@AllArgsConstructor
 public class EstadoDTO implements Serializable {
 
     @Serial

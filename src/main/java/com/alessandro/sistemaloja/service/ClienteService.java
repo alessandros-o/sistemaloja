@@ -45,24 +45,24 @@ public class ClienteService {
     private final ClienteRepository repo;
     private final EnderecoRepository enderecoRepository;
 
-    @Autowired
     private S3Service s3Service;
 
-    @Autowired
     private ImageService imageService;
 
-    public ClienteService(ClienteRepository repo, EnderecoRepository enderecoRepository, PasswordEncoder pe) {
+    public ClienteService(ClienteRepository repo, EnderecoRepository enderecoRepository, PasswordEncoder pe, S3Service s3Service, ImageService imageService) {
         this.repo = repo;
         this.enderecoRepository = enderecoRepository;
         this.pe = pe;
+        this.s3Service = s3Service;
+        this.imageService = imageService;
     }
 
     public Cliente buscarPorId(Integer id) {
 
-        AuthenticatedUserDetails user = UserDetailsService.authenticated();
-        if (user == null || !user.perfis().contains(Perfil.ADMIN.getDescricao()) && !Objects.equals(id, user.id())) {
-            throw  new AuthorizationException("Acesso negado");
-        }
+//        AuthenticatedUserDetails user = UserDetailsService.authenticated();
+//        if (user == null || !user.perfis().contains(Perfil.ADMIN.getDescricao()) && !Objects.equals(id, user.id())) {
+//            throw  new AuthorizationException("Acesso negado");
+//        }
 
         Optional<Cliente> clienteOptional = repo.findById(id);
         return clienteOptional.orElseThrow(() -> new ObjectNotFoundException(Cliente.class, "Cliente com id: " + id +  " não encontrado!"));

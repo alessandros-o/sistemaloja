@@ -1,6 +1,7 @@
 package com.alessandro.sistemaloja.dto;
 
 import com.alessandro.sistemaloja.service.validation.ClienteInsert;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
 
@@ -10,6 +11,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Builder
+@AllArgsConstructor
 @ClienteInsert
 public class ClienteCreateRequest implements Serializable {
 

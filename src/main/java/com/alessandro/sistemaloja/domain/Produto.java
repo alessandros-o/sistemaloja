@@ -1,12 +1,16 @@
 package com.alessandro.sistemaloja.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
+@Builder
 @Entity
+@AllArgsConstructor
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;

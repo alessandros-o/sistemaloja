@@ -1,12 +1,18 @@
 package com.alessandro.sistemaloja.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+@Builder
 @Entity
+@AllArgsConstructor
 public class Categoria implements Serializable {
 
     @Serial
